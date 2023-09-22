@@ -14,6 +14,13 @@
 
 ## 구성
 
+### 사용한 기술 스택
+
+- 언어 : Java
+- 프레임워크 : Spring Boot
+- DB : MySQL
+- 그외 : JPA, Docker
+
 ### UI/UX 구성
 
 (작성예정)
