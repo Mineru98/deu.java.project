@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  db:
+    image: mysql:8.0.22
+    platform: linux/x86_64
+    container_name: deu-mysql
+    environment:
+      - MYSQL_DATABASE=deu
+      - MYSQL_ROOT_PASSWORD=password
+      - TZ=Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+    volumes:
+      - project_mysql_db:/var/lib/mysql
+    ports:
+      - 3306:3306
+volumes:
+  project_mysql_db: {}
