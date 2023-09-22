@@ -36,4 +36,10 @@
 ## 설치
 
 ### 기본 종속성
-[빠른 시작 링크](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=3.1.4&packaging=jar&jvmVersion=11&groupId=ac.kr.deu&artifactId=FindEmptyClassroom&name=FindEmptyClassroom&description=Web%20service%20to%20find%20empty%20classrooms%20at%20Dongui%20University&packageName=ac.kr.deu.FindEmptyClassroom&dependencies=lombok,devtools,configuration-processor,web,thymeleaf,jdbc,data-jpa,mysql)
+[빠른 시작 링크](https://start.spring.io/#!type=gradle-project&language=java&platformVersion=3.1.4&packaging=jar&jvmVersion=17&groupId=ac.kr.deu&artifactId=FindEmptyClassroom&name=FindEmptyClassroom&description=Web%20service%20to%20find%20empty%20classrooms%20at%20Dongui%20University&packageName=ac.kr.deu.FindEmptyClassroom&dependencies=lombok,devtools,configuration-processor,web,thymeleaf,jdbc,data-jpa,mysql)
+
+### 디비 실행
+
+```cmd
+docker-compose up -d db
+```
