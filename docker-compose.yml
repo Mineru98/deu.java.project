@@ -14,7 +14,7 @@ services:
     volumes:
       - project_mysql_db:/var/lib/mysql
     ports:
-      - 3306:3306
+      - 3307:3306
   ocr:
     build:
       context: ./docker
