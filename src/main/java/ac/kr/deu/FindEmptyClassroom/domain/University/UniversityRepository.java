@@ -4,7 +4,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UniversityRepository extends JpaRepository<University, Long> {
-  <T> Optional<T> findById(Long id, Class<T> type);
+  <T> Optional<T> findByUniversityId(Long universityId, Class<T> type);
 
-  void deleteById(Long id);
+  void deleteByUniversityId(Long universityId);
 }

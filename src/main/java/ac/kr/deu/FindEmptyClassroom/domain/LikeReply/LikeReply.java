@@ -1,5 +1,6 @@
-package ac.kr.deu.FindEmptyClassroom.domain.LikeComment;
+package ac.kr.deu.FindEmptyClassroom.domain.LikeReply;
 
+import ac.kr.deu.FindEmptyClassroom.domain.Reply.Reply;
 import ac.kr.deu.FindEmptyClassroom.domain.User.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
@@ -17,8 +18,8 @@ import org.hibernate.annotations.DynamicInsert;
 @Getter
 @Setter
 @Entity
-@Table(name = "LikeComment")
-public class LikeComment {
+@Table(name = "LikeReply")
+public class LikeReply {
 
   @Id
   @Column(name = "likeId", updatable = false, nullable = false)
@@ -33,16 +34,16 @@ public class LikeComment {
 
   @Comment("댓글 Id")
   @JsonBackReference
-  @JoinColumn(name = "commentId")
+  @JoinColumn(name = "replyId")
   @ManyToOne(fetch = FetchType.LAZY)
-  private ac.kr.deu.FindEmptyClassroom.domain.Comment.Comment comment;
+  private Reply reply;
 
-  public LikeComment(
+  public LikeReply(
     User user,
-    ac.kr.deu.FindEmptyClassroom.domain.Comment.Comment comment
+    Reply reply
   ) {
     this.user = user;
-    this.comment = comment;
+    this.reply = reply;
   }
 
   private LocalDateTime createdAt;
@@ -55,7 +56,7 @@ public class LikeComment {
     if (
       o == null || Hibernate.getClass(this) != Hibernate.getClass(o)
     ) return false;
-    LikeComment that = (LikeComment) o;
+    LikeReply that = (LikeReply) o;
     return likeId != null && Objects.equals(likeId, that.likeId);
   }
 

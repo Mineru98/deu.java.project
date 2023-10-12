@@ -1,6 +1,7 @@
 package ac.kr.deu.FindEmptyClassroom.domain.Board;
 
 import ac.kr.deu.FindEmptyClassroom.domain.Course.Course;
+import ac.kr.deu.FindEmptyClassroom.domain.Reply.Reply;
 import ac.kr.deu.FindEmptyClassroom.domain.User.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -39,7 +40,7 @@ public class Board {
 
   @Comment("게시글 그룹")
   @Column(length = 128, nullable = false)
-  private String group;
+  private String boardGroup;
 
   @Comment("조회수")
   @ColumnDefault("0")
@@ -51,8 +52,8 @@ public class Board {
   private LocalDateTime updatedAt;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
-  private List<ac.kr.deu.FindEmptyClassroom.domain.Comment.Comment> commentList;
+  @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+  private List<Reply> replyList;
 
   @Comment("수업 Id")
   @OneToOne(mappedBy = "board")

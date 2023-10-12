@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-  <T> List<T> findAllByNameContaining(String Name, Class<T> type);
+  <T> List<T> findAllByUsernameContaining(String username, Class<T> type);
 
   <T> Optional<T> findByUsername(String username, Class<T> type);
 
@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Optional<User> findByUsernameAndPassword(String username, String password);
 
-  <T> Optional<T> findById(Long id, Class<T> type);
+  <T> Optional<T> findByUserId(Long userId, Class<T> type);
 
-  void deleteById(Long id);
+  void deleteByUserId(Long userId);
 }

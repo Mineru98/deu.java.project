@@ -42,19 +42,19 @@ public class University {
   private LocalDateTime updatedAt;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
   private List<User> userList;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
   private List<Building> buildingList;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
   private List<Room> roomList;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
   private List<Course> courseList;
 
   @Override

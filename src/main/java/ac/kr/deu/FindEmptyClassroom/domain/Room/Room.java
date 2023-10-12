@@ -50,7 +50,7 @@ public class Room {
   private Building building;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
   private List<Course> courseList;
 
   @Override

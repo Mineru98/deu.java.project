@@ -1,4 +1,4 @@
-package ac.kr.deu.FindEmptyClassroom.domain.Comment;
+package ac.kr.deu.FindEmptyClassroom.domain.Reply;
 
 import ac.kr.deu.FindEmptyClassroom.domain.Board.Board;
 import ac.kr.deu.FindEmptyClassroom.domain.User.User;
@@ -9,6 +9,7 @@ import javax.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 
 @DynamicInsert
@@ -18,29 +19,29 @@ import org.hibernate.annotations.DynamicInsert;
 @Getter
 @Setter
 @Entity
-@Table(name = "Comment")
-public class Comment {
+@Table(name = "Reply")
+public class Reply {
 
   @Id
-  @Column(name = "commentId", updatable = false, nullable = false)
+  @Column(name = "replyId", updatable = false, nullable = false)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long commentId;
+  private Long replyId;
 
-  @org.hibernate.annotations.Comment("댓글 내용")
+  @Comment("댓글 내용")
   @Column(length = 512, nullable = false)
   private String content;
 
-  @org.hibernate.annotations.Comment("계층")
+  @Comment("계층")
   @ColumnDefault("1")
   @Column(nullable = false)
   private Integer layer;
 
-  @org.hibernate.annotations.Comment("순서")
+  @Comment("순서")
   @ColumnDefault("1")
   @Column(nullable = false)
-  private Integer order;
+  private Integer rOrder;
 
-  @org.hibernate.annotations.Comment("댓글 그룹")
+  @Comment("댓글 그룹")
   @ColumnDefault("1")
   @Column(nullable = false)
   private Integer groupNum;
@@ -49,13 +50,13 @@ public class Comment {
 
   private LocalDateTime updatedAt;
 
-  @org.hibernate.annotations.Comment("작성자 Id")
+  @Comment("작성자 Id")
   @JsonBackReference
   @JoinColumn(name = "userId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   private User user;
 
-  @org.hibernate.annotations.Comment("게시판 Id")
+  @Comment("게시판 Id")
   @JsonBackReference
   @JoinColumn(name = "boardId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -67,8 +68,8 @@ public class Comment {
     if (
       o == null || Hibernate.getClass(this) != Hibernate.getClass(o)
     ) return false;
-    Comment that = (Comment) o;
-    return commentId != null && Objects.equals(commentId, that.commentId);
+    Reply that = (Reply) o;
+    return replyId != null && Objects.equals(replyId, that.replyId);
   }
 
   @Override

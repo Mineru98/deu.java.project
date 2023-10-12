@@ -1,6 +1,7 @@
 package ac.kr.deu.FindEmptyClassroom.domain.User;
 
 import ac.kr.deu.FindEmptyClassroom.domain.Claim.Claim;
+import ac.kr.deu.FindEmptyClassroom.domain.Reply.Reply;
 import ac.kr.deu.FindEmptyClassroom.domain.University.University;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -69,12 +70,12 @@ public class User {
   private University university;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "claim", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<Claim> claimList;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
-  private List<ac.kr.deu.FindEmptyClassroom.domain.Comment.Comment> commentList;
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  private List<Reply> replyList;
 
   @Override
   public boolean equals(Object o) {

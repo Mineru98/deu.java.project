@@ -82,7 +82,7 @@ public class Course {
   private Room room;
 
   @Comment("게시판 Id")
-  @JoinColumn(name = "board_id")
+  @JoinColumn(name = "boardId")
   @OneToOne
   private Board board;
 
