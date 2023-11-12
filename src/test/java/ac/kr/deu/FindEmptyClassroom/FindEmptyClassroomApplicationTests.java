@@ -98,6 +98,7 @@ class FindEmptyClassroomApplicationTests {
       Set<String> buildingSql = new HashSet<>();
       Set<String> roomSql = new HashSet<>();
       List<String> courseSql = new ArrayList<>();
+      List<String> boardSql = new ArrayList<>();
       HashMap<String, Integer> buildingMap = new HashMap<String, Integer>();
       HashMap<String, Integer> roomMap = new HashMap<String, Integer>();
       for (int i = 0; i < buildingArray.length; i++) {
@@ -105,7 +106,7 @@ class FindEmptyClassroomApplicationTests {
       }for (int i = 0; i < roomArray.length; i++) {
         roomMap.put(roomArray[i], i + 1);
       }
-      int courseId = 1;
+      int courseId = 0;
       for (String filePath: files) {
         FileInputStream fileInputStream = new FileInputStream(new File(filePath));
         Workbook workbook = WorkbookFactory.create(fileInputStream);
@@ -143,13 +144,14 @@ class FindEmptyClassroomApplicationTests {
           }
           for (int j = 5; j < sheet.getPhysicalNumberOfRows(); j++) {
             Row row = sheet.getRow(j);
-            int idx = 0;
-            int k = 1;
             StringBuilder building_row_sql = new StringBuilder("INSERT INTO Building (universityId, buildingNumber, buildingName, createdAt, updatedAt) VALUES (1, ");
             StringBuilder room_row_sql = new StringBuilder("INSERT INTO Room (universityId, buildingId, roomNumber, createdAt, updatedAt) VALUES (1, ");
-            StringBuilder course_row_sql = new StringBuilder("INSERT INTO Course (universityId, courseId, buildingId, roomId, courseName, courseNumber, divideNumber, department, courseDayOf, courseTime, professor, createdAt, updatedAt) VALUES (1, ");
+            StringBuilder course_row_sql = new StringBuilder("INSERT INTO Course (universityId, courseId, boardId, buildingId, roomId, courseName, courseNumber, divideNumber, department, courseDayOf, courseTime, professor, createdAt, updatedAt) VALUES (1, ");
+            StringBuilder board_row_sql = new StringBuilder("INSERT INTO Board (viewCount, createdAt, updatedAt, boardId, title) VALUES (0, NOW(), NOW(), ");
             String buildName = "";
             String roomName = "";
+            int idx = 0;
+            int k = 1;
             while (k <= 10) {
               Cell cell = row.getCell(k);
               if (cell != null && cell.getCellType() == STRING) {
@@ -191,8 +193,9 @@ class FindEmptyClassroomApplicationTests {
                   room_row_sql.append(buildingMap.get(buildName)).append(", ").append("'").append(cell.getStringCellValue()).append("', NOW(), NOW());");
                 } else if (idx < 6) {
                   if (idx == 2) {
-                    course_row_sql.append(courseId).append(", ");
                     courseId += 1;
+                    board_row_sql.append(courseId).append(", ").append("'").append(cell.getStringCellValue()).append(" - ");
+                    course_row_sql.append(courseId).append(", ").append(courseId).append(", ");
                     course_row_sql.append(buildingMap.get(buildName)).append(", ").append(roomMap.get(roomName)).append(", ");
                   }
                   if (!(idx == 5 && k == 9)) {
@@ -200,8 +203,10 @@ class FindEmptyClassroomApplicationTests {
                   }
                 } else if (idx == 6 && k == 10) {
                   // 간혹 셀이 비어있는 경우에 대한 처리
+                  board_row_sql.append(cell.getStringCellValue()).append("');");
                   course_row_sql.append("'', ").append(course_day_of).append(", ").append(course_time).append(", ").append("'").append(cell.getStringCellValue()).append("', NOW(), NOW());");
                 } else if (idx == 7) {
+                  board_row_sql.append(cell.getStringCellValue()).append("');");
                   course_row_sql.append(course_day_of).append(", ").append(course_time).append(", ").append("'").append(cell.getStringCellValue()).append("', NOW(), NOW());");
                 }
                 idx += 1;
@@ -209,9 +214,17 @@ class FindEmptyClassroomApplicationTests {
               k += 1;
             }
             if (idx > 2) {
+              if (board_row_sql.toString().endsWith(";")) {
+                boardSql.add(board_row_sql.toString());
+                courseSql.add(course_row_sql.toString());
+              } else {
+                board_row_sql.append("없음');");
+                course_row_sql.append(course_day_of).append(", ").append(course_time).append(", ").append("'").append("', NOW(), NOW());");
+                boardSql.add(board_row_sql.toString());
+                courseSql.add(course_row_sql.toString());
+              }
               buildingSql.add(building_row_sql.toString());
               roomSql.add(room_row_sql.toString());
-              courseSql.add(course_row_sql.toString());
             }
           }
         }
@@ -234,6 +247,13 @@ class FindEmptyClassroomApplicationTests {
 
           writer = new BufferedWriter(new FileWriter("src/main/resources/sql/course.sql"));
           for (String line : courseSql) {
+            writer.write(line);
+            writer.newLine();
+          }
+          writer.close();
+
+          writer = new BufferedWriter(new FileWriter("src/main/resources/sql/board.sql"));
+          for (String line : boardSql) {
             writer.write(line);
             writer.newLine();
           }

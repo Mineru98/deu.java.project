@@ -1,0 +1,50 @@
+<header class="flex h-16 bg-blue-400 sticky top-0 px-2" th:fragment="header">
+    <div class="basis-24 sm:basis-64 flex justify-start sm:justify-center">
+        <div class="w-24 cursor-pointer flex items-center justify-center">
+            <!--    로고    -->
+            <a class="text-white text-lg font-bold" href="/">빈 강의실</a>
+        </div>
+    </div>
+    <div class="flex-1 flex">
+    </div>
+    <div class="flex basis-24 sm:basis-64 justify-end">
+        <div class="hidden sm:flex ">
+            <div class="w-28 flex items-center justify-center">
+                <button class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
+                    로그인
+                </button>
+            </div>
+            <div class="w-28 flex items-center justify-center">
+                <button class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
+                    회원가입
+                </button>
+            </div>
+        </div>
+        <div class="w-12 cursor-pointer flex items-center justify-center sm:hidden">
+            <!--    메뉴탭 제어    -->
+            <div class="dropdown dropdown-end m-0 bg-inherit">
+                <label tabindex="0" class="btn btn-ghost">
+                    <svg width="20" height="32" viewBox="0 0 20 32" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="7" width="20" height="2" fill="#ffffff" />
+                        <rect x="0" y="15" width="20" height="2" fill="#ffffff" />
+                        <rect x="0" y="23" width="20" height="2" fill="#ffffff" />
+                    </svg>
+                </label>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li>
+                        <a class="active:bg-blue-200">찾기</a>
+                    </li>
+                    <li>
+                        <a class="active:bg-blue-200">랭킹</a>
+                    </li>
+                    <li>
+                        <a class="active:bg-blue-200">로그인</a>
+                    </li>
+                    <li>
+                        <a class="active:bg-blue-200">회원가입</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
