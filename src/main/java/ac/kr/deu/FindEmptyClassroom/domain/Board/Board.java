@@ -38,10 +38,6 @@ public class Board {
   @Lob
   private String content;
 
-  @Comment("게시글 그룹")
-  @Column(length = 128, nullable = false)
-  private String boardGroup;
-
   @Comment("조회수")
   @ColumnDefault("0")
   @Column(nullable = true)
@@ -58,12 +54,6 @@ public class Board {
   @Comment("수업 Id")
   @OneToOne(mappedBy = "board")
   private Course course;
-
-  @Comment("사용자 Id")
-  @JsonBackReference
-  @JoinColumn(name = "userId")
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  private User user;
 
   @Override
   public boolean equals(Object o) {

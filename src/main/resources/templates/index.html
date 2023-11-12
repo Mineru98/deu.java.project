@@ -1,0 +1,161 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+        integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function getDayNumber() {
+            const date = new Date();
+            const currentDate = date.getDay();
+            const hour = date.getHours();
+            if (currentDate === 0 && hour > 18) {
+                return 1;
+            } else {
+                return currentDate;
+            }
+        }
+
+        function getTimeNumber() {
+            const date = new Date();
+            const hour = date.getHours();
+
+            if (hour < 9 || hour > 18) {
+                return 1;
+            } else if (hour >= 9 && hour < 10) {
+                return 2;
+            } else if (hour >= 10 && hour < 11) {
+                return 3;
+            } else if (hour >= 11 && hour < 12) {
+                return 4;
+            } else if (hour >= 12 && hour < 13) {
+                return 5;
+            } else if (hour >= 13 && hour < 14) {
+                return 6;
+            } else if (hour >= 14 && hour < 15) {
+                return 7;
+            } else if (hour >= 15 && hour < 16) {
+                return 8;
+            } else if (hour >= 16 && hour < 17) {
+                return 9;
+            } else {
+                return 1;
+            }
+        }
+
+        function objectToQueryString(obj) {
+            return Object.keys(obj).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`).join('&');
+        }
+
+        $(document).ready(function() {
+            $("#dateArr").val(getDayNumber());
+            $("#timeArr").val(getTimeNumber());
+
+            $("#searchBtn").on("click", function (e) {
+                const universityId = $('#universityArr').val();
+                const courseDayOf = $('#dateArr').val();
+                const courseTime = $('#timeArr').val();
+                const roomName = $('#roomArr').val();
+                const buildingId = $('#buildingArr').val();
+                const queryString = objectToQueryString({
+                    universityId,
+                    courseDayOf,
+                    courseTime,
+                    roomName,
+                    buildingId: buildingId ? buildingId : "",
+                });
+
+                window.location.href = "/search?" + queryString;
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header th:replace="~{layouts/header :: header}"></header>
+    <div class="flex bg-[#E3E8EE]">
+        <main class="flex-1 flex flex-col h-screen items-center">
+            <div class="flex-1 flex flex-col sm:w-[420px] w-full px-4">
+                <div class="flex h-24 items-center justify-center">
+                    <h2 class="text-3xl font-bold">빈 강의실 좀 찾아줘...</h2>
+                </div>
+
+                <div class="flex flex-row justify-center">
+                    <div class="flex-1 mr-2 form-control w-full max-w-xs">
+                        <label class="label">
+                            <span class="label-text">*대학교</span>
+                        </label>
+                        <select id="universityArr" class="select select-bordered">
+                            <option value="1" selected>동의대학교</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-row justify-center my-2">
+                    <div class="flex-1 mr-2 form-control w-full max-w-xs">
+                        <label class="label">
+                            <span class="label-text">*요일</span>
+                        </label>
+                        <select id="dateArr" class="select select-bordered">
+                            <option value="1">월요일</option>
+                            <option value="2">화요일</option>
+                            <option value="3">수요일</option>
+                            <option value="4">목요일</option>
+                            <option value="5">금요일</option>
+                            <option value="6">토요일</option>
+                            <option value="0">일요일</option>
+                        </select>
+                    </div>
+                    <div class="flex-1 ml-2 form-control w-full max-w-xs">
+                        <label class="label">
+                            <span class="label-text">*시간대</span>
+                        </label>
+                        <select id="timeArr" class="select select-bordered">
+                            <option value="1">1교시(09:00~10:00)</option>
+                            <option value="2">2교시(10:00~11:00)</option>
+                            <option value="3">3교시(11:00~12:00)</option>
+                            <option value="4">4교시(12:00~13:00)</option>
+                            <option value="5">5교시(13:00~14:00)</option>
+                            <option value="6">6교시(14:00~15:00)</option>
+                            <option value="7">7교시(15:00~16:00)</option>
+                            <option value="8">8교시(16:00~17:00)</option>
+                            <option value="9">9교시(17:00~18:00)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-row justify-center my-2">
+                    <div class="flex-1 mr-2 form-control w-full max-w-xs">
+                        <label class="label">
+                            <span class="label-text">건물명</span>
+                        </label>
+                        <select id="buildingArr" class="select select-bordered">
+                            <option selected value="">선택하세요</option>
+                            <option th:each="build : ${buildingArr}" th:value="${build.buildingId}" th:text="${build.buildingName + '('  +  build.buildingNumber + ')'}"></option>
+                        </select>
+                    </div>
+                    <div class="flex-1 ml-2 form-control w-full max-w-xs">
+                        <label class="label">
+                            <span class="label-text">강의실</span>
+                        </label>
+                        <input id="roomArr" type="text" placeholder="강의실 입력" class="input input-bordered w-full max-w-xs" />
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center my-2">
+                    <button id="searchBtn" class="w-full btn bg-blue-200 border-blue-300 active:bg-blue-400 hover:bg-blue-400">찾기</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer></footer>
+</body>
+
+</html>

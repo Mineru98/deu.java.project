@@ -38,6 +38,7 @@
 1. university.sql
 2. bilding.sql
 3. room.sql
+4. board.sql
 4. course.sql
 
 ## 설치
