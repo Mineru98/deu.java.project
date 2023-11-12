@@ -1,0 +1,1 @@
+INSERT INTO University (universityId, name, `location`, createdAt, updatedAt) VALUES (1, '동의대학교', '부산광역시', NOW(), NOW());

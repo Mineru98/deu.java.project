@@ -57,7 +57,7 @@ public class Course {
   @Comment("시간대")
   @ColumnDefault("1")
   @Column(nullable = true)
-  private Integer courseIime;
+  private Integer courseTime;
 
   private LocalDateTime createdAt;
 
