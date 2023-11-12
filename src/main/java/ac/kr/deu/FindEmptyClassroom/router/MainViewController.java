@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -39,8 +40,8 @@ public class MainViewController {
   public String searchView(Model model, HttpServletRequest req) {
     RequestDTO dto = new RequestDTO();
     String universityId = req.getParameter("universityId");
-    String courseDayOf = req.getParameter("courseDayOf");
-    String courseTime = req.getParameter("courseTime");
+    String[] courseDayOf = req.getParameterValues("courseDayOf");
+    String[] courseTime = req.getParameterValues("courseTime");
     String roomName = req.getParameter("roomName");
     String buildingId = req.getParameter("buildingId");
     if (universityId != null && !universityId.isBlank()) {
@@ -49,16 +50,23 @@ public class MainViewController {
     if (buildingId != null && !buildingId.isBlank()) {
       dto.setBuildingId(Long.valueOf(buildingId));
     }
-    if (courseDayOf != null && !courseDayOf.isBlank()) {
-      dto.setCourseDayOf(Long.valueOf(courseDayOf));
+    if (courseDayOf != null && courseDayOf.length != 0) {
+      List<Long> arr = new ArrayList<>();
+      for (String value : courseDayOf) {
+        arr.add(Long.valueOf(value));
+      }
+      dto.setCourseDayOf(arr);
     }
-    if (courseTime != null && !courseTime.isBlank()) {
-      dto.setCourseTime(Long.valueOf(courseTime));
+    if (courseTime != null && courseTime.length != 0) {
+      List<Long> arr = new ArrayList<>();
+      for (String value : courseTime) {
+        arr.add(Long.valueOf(value));
+      }
+      dto.setCourseTime(arr);
     }
     if (roomName != null && !roomName.isBlank()) {
       dto.setRoomName(roomName);
     }
-    log.info(dto.toString());
     model.addAttribute("title", "검색");
     List<Building> buildingList = buildingService.findAllByUniversityId(1L);
     model.addAttribute("buildingArr", buildingList);

@@ -51,7 +51,19 @@
         }
 
         function objectToQueryString(obj) {
-            return Object.keys(obj).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`).join('&');
+            const encode = (key, value) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+
+            const flattenArray = (key, arr) => arr.map(item => encode(key, item)).join('&');
+
+            return Object.keys(obj)
+                .map(key => {
+                    if (Array.isArray(obj[key])) {
+                        return flattenArray(key, obj[key]);
+                    } else {
+                        return encode(key, obj[key]);
+                    }
+                })
+                .join('&');
         }
 
         $(document).ready(function() {
@@ -71,7 +83,6 @@
                     roomName,
                     buildingId: buildingId ? buildingId : "",
                 });
-
                 window.location.href = "/search?" + queryString;
             });
         });
@@ -103,7 +114,7 @@
                         <label class="label">
                             <span class="label-text">*요일</span>
                         </label>
-                        <select id="dateArr" class="select select-bordered">
+                        <select multiple id="dateArr" class="select select-bordered">
                             <option value="1">월요일</option>
                             <option value="2">화요일</option>
                             <option value="3">수요일</option>
@@ -117,7 +128,7 @@
                         <label class="label">
                             <span class="label-text">*시간대</span>
                         </label>
-                        <select id="timeArr" class="select select-bordered">
+                        <select multiple id="timeArr" class="select select-bordered">
                             <option value="1">1교시(09:00~10:00)</option>
                             <option value="2">2교시(10:00~11:00)</option>
                             <option value="3">3교시(11:00~12:00)</option>

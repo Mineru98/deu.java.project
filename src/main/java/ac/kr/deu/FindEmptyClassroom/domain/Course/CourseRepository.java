@@ -46,11 +46,11 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                   "INNER JOIN Building AS B ON B.buildingId = C.buildingId " +
                   "INNER JOIN Room AS R ON R.roomId = C.roomId " +
                   "WHERE C.universityId = :universityId AND " +
-                  "C.courseTime = :courseTime AND " +
-                  "C.courseDayOf = :courseDayOf " +
+                  "C.courseTime IN :courseTime AND " +
+                  "C.courseDayOf IN :courseDayOf " +
                   "ORDER BY C.courseDayOf, C.courseTime, B.buildingName, B.buildingNumber;",
           nativeQuery = true)
-  <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOf(@Param("universityId") Long universityId, @Param("courseTime") Long courseTime, @Param("courseDayOf") Long courseDayOf, Class<T> type);
+  <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOf(@Param("universityId") Long universityId, @Param("courseTime") List<Long> courseTime, @Param("courseDayOf") List<Long> courseDayOf, Class<T> type);
 
   @Query(value =
           "SELECT DISTINCT " +
@@ -88,12 +88,12 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                   "INNER JOIN Building AS B ON B.buildingId = C.buildingId " +
                   "INNER JOIN Room AS R ON R.roomId = C.roomId " +
                   "WHERE C.universityId = :universityId AND " +
-                  "C.courseTime = :courseTime AND " +
-                  "C.courseDayOf = :courseDayOf AND " +
+                  "C.courseTime IN :courseTime AND " +
+                  "C.courseDayOf IN :courseDayOf AND " +
                   "R.roomNumber LIKE %:roomName% " +
                   "ORDER BY C.courseDayOf, C.courseTime, B.buildingName, B.buildingNumber;",
           nativeQuery = true)
-  <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOfAndRoomName(@Param("universityId") Long universityId, @Param("courseTime") Long courseTime, @Param("courseDayOf") Long courseDayOf, @Param("roomName") String roomName, Class<T> type);
+  <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOfAndRoomName(@Param("universityId") Long universityId, @Param("courseTime") List<Long> courseTime, @Param("courseDayOf") List<Long> courseDayOf, @Param("roomName") String roomName, Class<T> type);
 
   @Query(value =
           "SELECT DISTINCT " +
@@ -131,12 +131,12 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                   "INNER JOIN Building AS B ON B.buildingId = C.buildingId " +
                   "INNER JOIN Room AS R ON R.roomId = C.roomId " +
                   "WHERE C.universityId = :universityId AND " +
-                  "C.courseTime = :courseTime AND " +
-                  "C.courseDayOf = :courseDayOf AND " +
+                  "C.courseTime IN :courseTime AND " +
+                  "C.courseDayOf IN :courseDayOf AND " +
                   "C.buildingId = :buildingId " +
                   "ORDER BY C.courseDayOf, C.courseTime, B.buildingName, B.buildingNumber;",
           nativeQuery = true)
-  <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOfAndBuildingId(@Param("universityId") Long universityId, @Param("courseTime") Long courseTime, @Param("courseDayOf") Long courseDayOf, @Param("buildingId") Long buildingId, Class<T> type);
+  <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOfAndBuildingId(@Param("universityId") Long universityId, @Param("courseTime") List<Long> courseTime, @Param("courseDayOf") List<Long> courseDayOf, @Param("buildingId") Long buildingId, Class<T> type);
 
   @Query(value =
           "SELECT DISTINCT " +
@@ -174,11 +174,11 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                   "INNER JOIN Building AS B ON B.buildingId = C.buildingId " +
                   "INNER JOIN Room AS R ON R.roomId = C.roomId " +
                   "WHERE C.universityId = :universityId AND " +
-                  "C.courseTime = :courseTime AND " +
-                  "C.courseDayOf = :courseDayOf AND " +
+                  "C.courseTime IN :courseTime AND " +
+                  "C.courseDayOf IN :courseDayOf AND " +
                   "C.buildingId = :buildingId AND " +
                   "R.roomNumber LIKE %:roomName% " +
                   "ORDER BY C.courseDayOf, C.courseTime, B.buildingName, B.buildingNumber;",
           nativeQuery = true)
-  <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOfAndRoomNameAndBuildingId(@Param("universityId") Long universityId, @Param("courseTime") Long courseTime, @Param("courseDayOf") Long courseDayOf, @Param("roomName") String roomName, @Param("buildingId") Long buildingId, Class<T> type);
+  <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOfAndRoomNameAndBuildingId(@Param("universityId") Long universityId, @Param("courseTime") List<Long> courseTime, @Param("courseDayOf") List<Long> courseDayOf, @Param("roomName") String roomName, @Param("buildingId") Long buildingId, Class<T> type);
 }
