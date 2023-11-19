@@ -1,5 +1,6 @@
 package ac.kr.deu.FindEmptyClassroom.domain.Room;
 
+import ac.kr.deu.FindEmptyClassroom.domain.Board.Board;
 import ac.kr.deu.FindEmptyClassroom.domain.Building.Building;
 import ac.kr.deu.FindEmptyClassroom.domain.Course.Course;
 import ac.kr.deu.FindEmptyClassroom.domain.University.University;
@@ -52,6 +53,10 @@ public class Room {
   @JsonManagedReference
   @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
   private List<Course> courseList;
+
+  @Comment("게시판 Id")
+  @OneToOne(mappedBy = "room")
+  private Board board;
 
   @Override
   public boolean equals(Object o) {

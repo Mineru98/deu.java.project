@@ -8,8 +8,4 @@ public interface SearchMapping {
     String getBuildingNumber();
 
     String getRoomNumber();
-
-    String getFormattedCourseDayOf();
-
-    String getFormattedCourseTime();
 }

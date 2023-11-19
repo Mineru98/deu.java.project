@@ -1,13 +1,14 @@
 package ac.kr.deu.FindEmptyClassroom.router;
 
-import javax.servlet.http.HttpServletRequest;
-
 import ac.kr.deu.FindEmptyClassroom.domain.Building.Building;
 import ac.kr.deu.FindEmptyClassroom.domain.Req.RequestDTO;
 import ac.kr.deu.FindEmptyClassroom.domain.Room.Room;
 import ac.kr.deu.FindEmptyClassroom.service.building.BuildingService;
 import ac.kr.deu.FindEmptyClassroom.service.course.CourseService;
 import ac.kr.deu.FindEmptyClassroom.service.room.RoomService;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,21 +17,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "")
 public class MainViewController {
+
   private final RoomService roomService;
   private final CourseService courseService;
   private final BuildingService buildingService;
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String mainView(Model model, HttpServletRequest req) {
-    model.addAttribute("title", "메인 페이지");
+    model.addAttribute("title", "빈 강의실 좀 찾아줘");
     List<Building> buildingList = buildingService.findAllByUniversityId(1L);
     model.addAttribute("buildingArr", buildingList);
     return "index.html";
@@ -75,10 +74,17 @@ public class MainViewController {
   }
 
   @RequestMapping(value = "/detail/{roomId}", method = RequestMethod.GET)
-  public String detailView(@PathVariable Long roomId, Model model, HttpServletRequest req) {
+  public String detailView(
+    @PathVariable Long roomId,
+    Model model,
+    HttpServletRequest req
+  ) {
     Room room = roomService.getOneByRoomId(roomId);
     if (room != null) {
-      model.addAttribute("title", room.getBuilding().getBuildingName() + " - " + room.getRoomNumber());
+      model.addAttribute(
+        "title",
+        room.getBuilding().getBuildingName() + " - " + room.getRoomNumber()
+      );
       return "detail.html";
     } else {
       return "notfound.html";
