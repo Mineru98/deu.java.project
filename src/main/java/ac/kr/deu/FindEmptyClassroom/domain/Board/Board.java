@@ -2,8 +2,7 @@ package ac.kr.deu.FindEmptyClassroom.domain.Board;
 
 import ac.kr.deu.FindEmptyClassroom.domain.Course.Course;
 import ac.kr.deu.FindEmptyClassroom.domain.Reply.Reply;
-import ac.kr.deu.FindEmptyClassroom.domain.User.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import ac.kr.deu.FindEmptyClassroom.domain.Room.Room;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +42,16 @@ public class Board {
   @Column(nullable = true)
   private Integer viewCount;
 
+  @Comment("반영년도")
+  @ColumnDefault("2023")
+  @Column(nullable = false)
+  private Integer applyYear;
+
+  @Comment("반영학기")
+  @ColumnDefault("1")
+  @Column(nullable = false)
+  private Integer applySemester;
+
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
@@ -51,9 +60,10 @@ public class Board {
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
   private List<Reply> replyList;
 
-  @Comment("수업 Id")
-  @OneToOne(mappedBy = "board")
-  private Course course;
+  @Comment("강의실 Id")
+  @JoinColumn(name = "roomId")
+  @OneToOne
+  private Room room;
 
   @Override
   public boolean equals(Object o) {

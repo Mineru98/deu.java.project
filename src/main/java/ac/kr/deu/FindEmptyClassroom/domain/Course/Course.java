@@ -59,6 +59,16 @@ public class Course {
   @Column(nullable = true)
   private Integer courseTime;
 
+  @Comment("반영년도")
+  @ColumnDefault("2023")
+  @Column(nullable = false)
+  private Integer applyYear;
+
+  @Comment("반영학기")
+  @ColumnDefault("1")
+  @Column(nullable = false)
+  private Integer applySemester;
+
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
@@ -80,11 +90,6 @@ public class Course {
   @JoinColumn(name = "roomId")
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   private Room room;
-
-  @Comment("게시판 Id")
-  @JoinColumn(name = "boardId")
-  @OneToOne
-  private Board board;
 
   @Override
   public boolean equals(Object o) {

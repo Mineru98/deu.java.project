@@ -167,9 +167,9 @@
                     </thead>
                     <tbody>
                         <tr th:each="item : ${items}" class="cursor-pointer" th:id="${'roomId:' + item.roomId}">
-                            <td class="text-center" th:text="${item.buildingName + '(' + item.buildingNumber + ')'}"></td>
-                            <td class="text-center" th:text="${item.roomNumber}"></td>
-                            <td class="text-center" th:text="${item.formattedCourseDayOf + '/' + item.formattedCourseTime}"></td>
+                            <td class="text-center" th:text="${item.buildingName + '(' + item.buildingNumber + '번 건물)'}"></td>
+                            <td class="text-center" th:text="${item.roomNumber + '호'}"></td>
+                            <td class="text-center" th:text="비어있음"></td>
                         </tr>
                     </tbody>
                 </table>
