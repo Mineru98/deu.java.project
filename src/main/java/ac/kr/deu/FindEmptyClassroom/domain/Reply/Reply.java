@@ -50,6 +50,12 @@ public class Reply {
 
   private LocalDateTime updatedAt;
 
+  @PrePersist
+  public void createDate() {
+      this.createdAt = LocalDateTime.now();
+      this.updatedAt = LocalDateTime.now();
+  }
+
   @Comment("작성자 Id")
   @JsonBackReference
   @JoinColumn(name = "userId")

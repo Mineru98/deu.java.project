@@ -34,14 +34,14 @@
                     },
                     error: function (xhr, status, error) {
                         // 오류 처리
-                        console.log(xhr);
+                        alert(xhr.responseJSON.message);
                     }
                 });
             });
         });
     </script>
 </head>
-<body class="h-screen font-sans login bg-cover bg-[#E3E8EE]">
+<body class="font-sans login bg-cover bg-[#E3E8EE]">
     <header th:replace="~{layouts/header :: header}"></header>
     <main class="container mx-auto h-full flex flex-1 justify-center items-center">
         <div class="w-full max-w-lg">

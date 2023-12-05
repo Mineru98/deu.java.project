@@ -1,12 +1,17 @@
 package ac.kr.deu.FindEmptyClassroom.service.course;
 
+import ac.kr.deu.FindEmptyClassroom.domain.Course.Course;
 import ac.kr.deu.FindEmptyClassroom.domain.Course.CourseRepository;
 import ac.kr.deu.FindEmptyClassroom.domain.Course.dto.SearchMapping;
 import ac.kr.deu.FindEmptyClassroom.domain.Req.RequestDTO;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import ac.kr.deu.FindEmptyClassroom.domain.Room.Room;
+import ac.kr.deu.FindEmptyClassroom.domain.Room.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class CourseService {
-
+  private final RoomRepository roomRepository;
   private final CourseRepository courseRepository;
+
+  @Transactional(readOnly = true)
+  public List<Course> getAllByRoomId(Long roomId) {
+    Optional<Room> entity = roomRepository.findById(roomId);
+    if (entity.isPresent()) {
+      return courseRepository.findAllByRoom(entity.get());
+    } else {
+      return new ArrayList<>();
+    }
+  }
 
   @Transactional
   public List<SearchMapping> getAllByCondition(RequestDTO dto) {

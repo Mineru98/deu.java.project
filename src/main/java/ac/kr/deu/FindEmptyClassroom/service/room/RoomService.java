@@ -2,7 +2,7 @@ package ac.kr.deu.FindEmptyClassroom.service.room;
 
 import ac.kr.deu.FindEmptyClassroom.domain.Room.Room;
 import ac.kr.deu.FindEmptyClassroom.domain.Room.RoomRepository;
-import ac.kr.deu.FindEmptyClassroom.domain.University.UniversityRepository;
+import ac.kr.deu.FindEmptyClassroom.handler.exception.CustomIllegalStateExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RoomService {
     private final RoomRepository roomRepository;
-    private final UniversityRepository universityRepository;
 
     @Transactional
     public Room getOneByRoomId(Long roomId) {
@@ -21,7 +20,9 @@ public class RoomService {
         if (entity.isPresent()) {
             return entity.get();
         } else {
-            return null;
+            throw new CustomIllegalStateExceptionHandler(
+                "존재하지 않는 게시글입니다."
+            );
         }
     }
 }

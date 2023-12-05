@@ -50,6 +50,12 @@ public class LikeReply {
 
   private LocalDateTime updatedAt;
 
+  @PrePersist
+  public void createDate() {
+      this.createdAt = LocalDateTime.now();
+      this.updatedAt = LocalDateTime.now();
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

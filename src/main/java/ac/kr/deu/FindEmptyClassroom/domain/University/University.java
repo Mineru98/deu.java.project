@@ -41,6 +41,12 @@ public class University {
 
   private LocalDateTime updatedAt;
 
+  @PrePersist
+  public void createDate() {
+      this.createdAt = LocalDateTime.now();
+      this.updatedAt = LocalDateTime.now();
+  }
+
   @JsonManagedReference
   @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
   private List<User> userList;

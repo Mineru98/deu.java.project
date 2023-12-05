@@ -2,6 +2,8 @@ package ac.kr.deu.FindEmptyClassroom.domain.Course;
 
 import java.util.List;
 import java.util.Optional;
+
+import ac.kr.deu.FindEmptyClassroom.domain.Room.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,10 +23,12 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     "INNER JOIN Building AS B ON B.buildingId = C.buildingId " +
     "INNER JOIN Room AS R ON R.roomId = C.roomId " +
     "WHERE C.buildingId NOT IN(1, 2, 3, 6, 18, 23, 24, 25)" +
-    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber;",
+    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber",
     nativeQuery = true
   )
   <T> List<T> findAll(Class<T> type);
+
+  List<Course> findAllByRoom(Room room);
 
   @Query(
           value = "SELECT DISTINCT " +
@@ -39,7 +43,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                   "INNER JOIN Room AS R ON R.roomId = C.roomId " +
                   "WHERE C.buildingId NOT IN(1, 2, 3, 6, 18, 23, 24, 25) AND " +
                   "C.buildingId = :buildingId " +
-                  "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber;",
+                  "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber",
           nativeQuery = true
   )
   <T> List<T> findAllByBuildingId(
@@ -59,7 +63,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             "INNER JOIN Room AS R ON R.roomId = C.roomId " +
             "WHERE C.buildingId NOT IN(1, 2, 3, 6, 18, 23, 24, 25) AND " +
             "R.roomNumber LIKE %:roomName% " +
-            "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber;",
+            "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber",
     nativeQuery = true
   )
   <T> List<T> findAllByRoomName(
@@ -80,7 +84,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                   "WHERE C.buildingId NOT IN(1, 2, 3, 6, 18, 23, 24, 25) AND " +
                   "C.buildingId = :buildingId AND " +
                   "R.roomNumber LIKE %:roomName% " +
-                  "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber;",
+                  "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber",
           nativeQuery = true
   )
   <T> List<T> findAllByBuildingIdAndRoomName(
@@ -107,7 +111,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     "C2.courseDayOf IN :courseDayOf" +
     ") AND " +
     "C.buildingId NOT IN(1, 2, 3, 6, 18, 23, 24, 25)" +
-    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber;",
+    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber",
     nativeQuery = true
   )
   <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOf(
@@ -137,7 +141,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     ") AND " +
     "C.buildingId NOT IN(1, 2, 3, 6, 18, 23, 24, 25) AND " +
     "R.roomNumber LIKE %:roomName% " +
-    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber;",
+    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber",
     nativeQuery = true
   )
   <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOfAndRoomName(
@@ -168,7 +172,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     ") AND " +
     "C.buildingId NOT IN(1, 2, 3, 6, 18, 23, 24, 25) AND " +
     "C.buildingId = :buildingId " +
-    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber;",
+    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber",
     nativeQuery = true
   )
   <T> List<T> findByUniversityIdAndCourseTimeAndCourseDayOfAndBuildingId(
@@ -200,7 +204,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     "C.buildingId NOT IN(1, 2, 3, 6, 18, 23, 24, 25) AND " +
     "C.buildingId = :buildingId AND " +
     "R.roomNumber LIKE %:roomName% " +
-    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber;",
+    "ORDER BY R.roomNumber, B.buildingName, B.buildingNumber",
     nativeQuery = true
   )
   <

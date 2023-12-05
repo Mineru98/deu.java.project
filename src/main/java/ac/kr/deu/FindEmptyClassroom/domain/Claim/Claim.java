@@ -33,6 +33,11 @@ public class Claim {
 
   private LocalDateTime updatedAt;
 
+    @PrePersist
+    public void createDate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
   @Comment("사용자 Id")
   @JsonBackReference
   @JoinColumn(name = "userId")

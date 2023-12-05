@@ -41,6 +41,12 @@ public class Building {
 
   private LocalDateTime updatedAt;
 
+  @PrePersist
+  public void createDate() {
+      this.createdAt = LocalDateTime.now();
+      this.updatedAt = LocalDateTime.now();
+  }
+
   @Comment("대학교 Id")
   @JsonBackReference
   @JoinColumn(name = "universityId")

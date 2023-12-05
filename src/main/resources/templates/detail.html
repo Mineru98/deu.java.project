@@ -11,15 +11,143 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
             integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/js/control.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $("#replyList").on("click", "[id^='replyId:']", function () {
+                const replyId = parseInt($(this).prop("id").replace("replyId:", ""));
+                const data = {
+                    userId: [[${userId}]],
+                    replyId: replyId
+                };
+                $.ajax({
+                    url: '/api/reply/like',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (res) {
+                        if (res.state === "CREATED") {
+                            window.location.reload();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // 오류 처리
+                        alert(xhr.responseJSON.message);
+                    }
+                });
+            });
+
+            $("#writeBtn").on("click", function (e) {
+                const replyContent = $('#replyContent').val();
+                if (replyContent !== "") {
+                    const data = {
+                        userId: [[${userId}]],
+                        roomId: [[${roomId}]],
+                        replyContent: replyContent,
+                    };
+
+                    $.ajax({
+                        url: '/api/reply',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (res) {
+                            if (res.state === "CREATED") {
+                                window.location.reload();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // 오류 처리
+                            alert(xhr.responseJSON.message);
+                        }
+                    });
+                } else {
+                    alert("댓글을 입력해주세요.");
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
 <header th:replace="~{layouts/header :: header}"></header>
 <div class="flex bg-[#E3E8EE]">
-    <main class="flex-1 flex flex-col h-screen">
-        <div class="flex-1 flex flex-col">
-            <div class="flex flex-1"></div>
+    <main class="flex-1 flex flex-col h-screen items-center">
+        <div class="flex-1 flex flex-col sm:w-[420px] w-full px-4">
+            <div class="flex flex-col justify-center my-4">
+                <h2 class="text-xl font-bold" th:text="${buildingName}"></h2>
+                <h2 class="text-xl font-bold" th:text="${roomName}"></h2>
+            </div>
+
+            <div class="flex h-12 items-center">
+                <h3 class="text-lg">해당 강의실 수업 목록</h3>
+            </div>
+            <div class="rounded-lg flex-1 max-h-[35vh] overflow-auto">
+                <table class="table bg-slate-100 table-pin-rows table-pin-cols">
+                    <!-- head -->
+                    <thead>
+                        <tr class="bg-blue-100">
+                            <th class="text-center">수업명</th>
+                            <th class="text-center">개설학과</th>
+                            <th class="text-center">교수명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${courseList}" class="cursor-pointer" th:id="${'courseId:' + item.courseId}">
+                            <td class="text-center" th:text="${item.courseName}"></td>
+                            <td class="text-center" th:text="${item.department}"></td>
+                            <td class="text-center" th:text="${item.professor}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex h-12 items-center justify-between">
+                <h3 class="text-lg">댓글 목록</h3>
+                <button class="btn btn-sm bg-blue-200 border-blue-300 active:bg-blue-400 hover:bg-blue-400" th:if="${userId != null}" onclick="writeModal.showModal()">댓글 작성</button>
+            </div>
+            <div class="flex-1 bg-white rounded-lg flex flex-col items-center justify-center max-h-[35vh] overflow-auto" th:if="${userId == null}">
+                <h4 class="mt-4 mb-2">로그인 후 보기가 가능합니다.</h4>
+                <a href="/auth/login" class="mt-2 mb-4 btn bg-blue-200 border-blue-300 active:bg-blue-400 hover:bg-blue-400">로그인 하러 가기</a>
+            </div>
+
+            <div class="bg-white rounded-lg max-h-[35vh] overflow-auto" th:if="${userId != null}">
+                <table class="table bg-slate-100 table-pin-rows table-pin-cols">
+                    <!-- head -->
+                    <thead>
+                        <tr class="bg-blue-100">
+                            <th class="text-center">내용</th>
+                            <th class="text-center">작성일자</th>
+                            <th class="text-center">반응</th>
+                        </tr>
+                    </thead>
+                    <tbody id="replyList">
+                        <tr th:each="item : ${replyList}" class="cursor-pointer">
+                            <td class="text-center" th:text="${item.content}"></td>
+                            <td class="text-center" th:text="${#temporals.format(item.createdAt, 'yyyy.MM.dd HH:mm')}"></td>
+                            <td class="flex flex-row justify-center items-center">
+                                <button th:id="${'replyId:' + item.replyId}" class="btn btn-sm">추천</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <dialog id="writeModal" class="modal">
+                <div class="modal-box">
+                    <h3 class="font-bold text-lg">댓글 작성</h3>
+                    <div>
+                        <div class="flex items-center justify-center my-2">
+                            <input id="replyContent" type="text" placeholder="댓글 입력" class="input input-bordered w-full max-w-xs" />
+                        </div>
+                    </div>
+                    <div class="modal-action">
+                        <form method="dialog" class="flex flex-row items-end">
+                            <button id="writeBtn" class="btn btn-sm bg-blue-200 border-blue-300 active:bg-blue-400 hover:bg-blue-400 mx-2">작성</button>
+                            <button class="btn btn-sm mx-2">닫기</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     </main>
 </div>
