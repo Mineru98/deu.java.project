@@ -42,23 +42,6 @@ public class User {
   @Column(length = 64, nullable = true)
   private String userType;
 
-  @Comment("암호화 솔트")
-  @Column(length = 64, nullable = true)
-  private String salt;
-
-  @Comment("학번(MD 암호화)")
-  @Column(length = 16, nullable = false)
-  private String classOf;
-
-  @Comment("학번")
-  @Column(length = 12, nullable = true)
-  private String major;
-
-  @Comment("본인인증여부")
-  @Column(columnDefinition = "TINYINT(1)")
-  @ColumnDefault("0")
-  private Boolean isVerified;
-
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;

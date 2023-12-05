@@ -9,15 +9,15 @@
     </div>
     <div class="flex basis-24 sm:basis-64 justify-end">
         <div class="hidden sm:flex ">
-            <div class="w-28 flex items-center justify-center">
-                <button class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
+            <div th:if="${userId == null}" class="w-28 flex items-center justify-center">
+                <a href="/auth/login" class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
                     로그인
-                </button>
+                </a>
             </div>
-            <div class="w-28 flex items-center justify-center">
-                <button class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
+            <div th:if="${userId == null}" class="w-28 flex items-center justify-center">
+                <a href="/auth/sigup" class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
                     회원가입
-                </button>
+                </a>
             </div>
         </div>
         <div class="w-12 cursor-pointer flex items-center justify-center sm:hidden">
@@ -37,10 +37,10 @@
                     <li>
                         <a class="active:bg-blue-200">랭킹</a>
                     </li>
-                    <li>
+                    <li th:if="${userId == null}">
                         <a class="active:bg-blue-200">로그인</a>
                     </li>
-                    <li>
+                    <li th:if="${userId == null}">
                         <a class="active:bg-blue-200">회원가입</a>
                     </li>
                 </ul>

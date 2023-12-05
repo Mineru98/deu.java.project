@@ -9,15 +9,14 @@ import ac.kr.deu.FindEmptyClassroom.service.room.RoomService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "")
@@ -32,6 +31,10 @@ public class MainViewController {
     model.addAttribute("title", "빈 강의실 좀 찾아줘");
     List<Building> buildingList = buildingService.findAllByUniversityId(1L);
     model.addAttribute("buildingArr", buildingList);
+    // 세션 정보 로드
+    HttpSession session = req.getSession();
+    model.addAttribute("userId", session.getAttribute("userId"));
+    model.addAttribute("name", session.getAttribute("name"));
     return "index.html";
   }
 
@@ -70,6 +73,10 @@ public class MainViewController {
     List<Building> buildingList = buildingService.findAllByUniversityId(1L);
     model.addAttribute("buildingArr", buildingList);
     model.addAttribute("items", courseService.getAllByCondition(dto));
+    // 세션 정보 로드
+    HttpSession session = req.getSession();
+    model.addAttribute("userId", session.getAttribute("userId"));
+    model.addAttribute("name", session.getAttribute("name"));
     return "search.html";
   }
 
@@ -80,6 +87,11 @@ public class MainViewController {
     HttpServletRequest req
   ) {
     Room room = roomService.getOneByRoomId(roomId);
+    // 세션 정보 로드
+    HttpSession session = req.getSession();
+    model.addAttribute("userId", session.getAttribute("userId"));
+    model.addAttribute("name", session.getAttribute("name"));
+
     if (room != null) {
       model.addAttribute(
         "title",

@@ -1,0 +1,84 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function (event) {
+                event.preventDefault(); // 기본 제출 동작 방지
+
+                const username = $('#username').val();
+                const password = $('#password').val();
+                const universityId = $("#universityArr").val();
+
+                const data = {
+                    username: username,
+                    password: password,
+                    universityId: universityId,
+                };
+
+                $.ajax({
+                    url: '/api/auth/login',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (res) {
+                        if (res.state === "OK") {
+                            window.location.href = "/"
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // 오류 처리
+                        console.log(xhr);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body class="h-screen font-sans login bg-cover bg-[#E3E8EE]">
+    <header th:replace="~{layouts/header :: header}"></header>
+    <main class="container mx-auto h-full flex flex-1 justify-center items-center">
+        <div class="w-full max-w-lg">
+            <div class="leading-loose">
+                <form class="max-w-xl m-4 p-10 bg-white rounded shadow-xl">
+                    <p class="text-gray-800 font-medium text-center text-lg font-bold">환영합니다</p>
+                    <div class="">
+                        <label class="label">
+                            <span class="label-text">*대학교</span>
+                        </label>
+                        <select id="universityArr" class="select select-bordered">
+                            <option value="1" selected>동의대학교</option>
+                        </select>
+                    </div>
+                    <div class="mt-2">
+                        <label class="block text-sm text-gray-00" for="username">이메일</label>
+                        <input class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" id="username" name="username"
+                            type="email" required="" placeholder="이메일을 입력하세요." aria-label="username">
+                    </div>
+                    <div class="mt-2">
+                        <label class="block text-sm text-gray-600" for="password">비밀번호</label>
+                        <input class="w-full px-5  py-1 text-gray-700 bg-gray-200 rounded" id="password" name="password"
+                            type="password" required="" placeholder="비밀번호를 입력하세요." aria-label="password">
+                    </div>
+                    <div class="mt-4 items-center justify-between">
+                        <button class="btn px-4 py-1 text-white tracking-wider bg-gray-900 rounded" type="submit">
+                            로그인
+                        </button>
+                        <a class="inline-block right-0 align-baseline  font-bold text-sm text-500 hover:text-blue-800"
+                        href="#">
+                            비밀번호를 잊으셨나요?
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>
