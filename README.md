@@ -27,7 +27,7 @@
 
 ### ERD
 
-(작성예정)
+![ERD](https://i.ibb.co/VVfq09n/image.png)
 
 ### Work Flow
 
