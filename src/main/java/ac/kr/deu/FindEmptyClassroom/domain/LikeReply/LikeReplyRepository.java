@@ -4,10 +4,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LikeReplyRepository extends JpaRepository<LikeReply, Long> {
     <T> Optional<T> findByLikeId(Long likeId, Class<T> type);
+
+    @Query(value = "SELECT " +
+            "U.userId, " +
+            "U.username, " +
+            "COUNT(L.replyId) AS likeCount " +
+            "FROM `User` U " +
+            "JOIN LikeReply L ON U.userId = L.userId " +
+            "GROUP BY U.userId, U.username " +
+            "ORDER BY likeCount DESC", nativeQuery = true)
+    <T> List<T> findAllWithRank(Class<T> type);
 
     @Query(
             value = "SELECT COUNT(*) AS CNT FROM " +

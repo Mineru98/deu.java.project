@@ -13,7 +13,7 @@ import java.util.List;
 public class UniversityService {
     private final UniversityRepository universityRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<University> getAll() {
         return universityRepository.findAll();
     };

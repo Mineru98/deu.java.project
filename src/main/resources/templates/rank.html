@@ -8,17 +8,36 @@
             integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
-            integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
 <header th:replace="~{layouts/header :: header}"></header>
 <div class="flex bg-[#E3E8EE]">
-    <main class="flex-1 flex flex-col h-screen">
-        <div class="flex-1 flex flex-col">
-            <div class="flex flex-1"></div>
+    <main class="flex-1 flex flex-col h-screen items-center">
+        <div class="flex-1 flex flex-col sm:w-[420px] w-full px-4">
+            <div class="flex h-24 items-center justify-center">
+                <h2 class="text-3xl font-bold">기여도 랭킹</h2>
+            </div>
+
+            <div class="flex-1 max-h-[65vh] overflow-auto rounded-lg">
+                <table class="table bg-slate-100 table-pin-rows table-pin-cols">
+                    <!-- head -->
+                    <thead>
+                        <tr class="bg-blue-100">
+                            <th class="text-center">순위</th>
+                            <th class="text-center">추천 개수</th>
+                            <th class="text-center">이메일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item, stat : ${userList}" class="cursor-pointer" th:id="${'userId:' + item.userId}">
+                            <td class="text-center" th:text="${stat.index + 1}"></td>
+                            <td class="text-center" th:text="${item.likeCount}"></td>
+                            <td class="text-center" th:text="${item.username}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 </div>

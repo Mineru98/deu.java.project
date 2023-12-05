@@ -3,13 +3,15 @@ package ac.kr.deu.FindEmptyClassroom.router;
 import ac.kr.deu.FindEmptyClassroom.domain.Board.dto.DetailMapping;
 import ac.kr.deu.FindEmptyClassroom.domain.Building.Building;
 import ac.kr.deu.FindEmptyClassroom.domain.Course.Course;
+import ac.kr.deu.FindEmptyClassroom.domain.LikeReply.dto.RankMapping;
 import ac.kr.deu.FindEmptyClassroom.domain.Reply.Reply;
 import ac.kr.deu.FindEmptyClassroom.domain.Req.RequestDTO;
+import ac.kr.deu.FindEmptyClassroom.domain.User.User;
 import ac.kr.deu.FindEmptyClassroom.service.board.BoardService;
 import ac.kr.deu.FindEmptyClassroom.service.building.BuildingService;
 import ac.kr.deu.FindEmptyClassroom.service.course.CourseService;
 import ac.kr.deu.FindEmptyClassroom.service.reply.ReplyService;
-import lombok.Getter;
+import ac.kr.deu.FindEmptyClassroom.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "")
 public class MainViewController {
+    private final UserService userService;
     private final ReplyService replyService;
     private final BoardService boardService;
     private final CourseService courseService;
@@ -92,6 +95,8 @@ public class MainViewController {
         model.addAttribute("userId", session.getAttribute("userId"));
         model.addAttribute("name", session.getAttribute("name"));
 
+        List<RankMapping> userList = userService.getRank();
+        model.addAttribute("userList", userList);
         return "rank.html";
     }
 
