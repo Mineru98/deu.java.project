@@ -14,9 +14,10 @@ public interface LikeReplyRepository extends JpaRepository<LikeReply, Long> {
             "U.userId, " +
             "U.username, " +
             "COUNT(L.replyId) AS likeCount " +
-            "FROM `User` U " +
-            "JOIN LikeReply L ON U.userId = L.userId " +
-            "GROUP BY U.userId, U.username " +
+            "FROM LikeReply L " +
+            "JOIN Reply AS R ON R.userId = L.userId " +
+            "JOIN User AS U ON U.userId = R.userId " +
+            "GROUP BY R.userId, U.username " +
             "ORDER BY likeCount DESC", nativeQuery = true)
     <T> List<T> findAllWithRank(Class<T> type);
 
