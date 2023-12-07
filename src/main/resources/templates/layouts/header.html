@@ -9,6 +9,16 @@
     </div>
     <div class="flex basis-24 sm:basis-64 justify-end">
         <div class="hidden sm:flex ">
+            <div class="w-28 flex items-center justify-center">
+                <a href="/" class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
+                    찾기
+                </a>
+            </div>
+            <div class="w-28 flex items-center justify-center">
+                <a href="/rank" class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
+                    랭킹
+                </a>
+            </div>
             <div th:if="${userId == null}" class="w-28 flex items-center justify-center">
                 <a href="/auth/login" class="btn btn-outline text-white hover:bg-blue-200 hover:border-blue-200">
                     로그인
